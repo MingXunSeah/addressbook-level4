@@ -9,8 +9,11 @@ import static seedu.recruit.logic.parser.CliSyntax.PREFIX_PHONE;
 import java.util.HashMap;
 import java.util.List;
 
+import seedu.recruit.commons.core.Messages;
+import seedu.recruit.logic.commands.FindCompanyCommand;
 import seedu.recruit.logic.parser.ArgumentMultimap;
 import seedu.recruit.logic.parser.ArgumentTokenizer;
+import seedu.recruit.logic.parser.exceptions.ParseException;
 import seedu.recruit.model.company.CompanyContainsFindKeywordsPredicate;
 
 /**
@@ -29,7 +32,7 @@ public class CompanyContainsFindKeywordsPredicateBuilder {
     private HashMap<String, List<String>> keywordsList = new HashMap<>();
     private CompanyContainsFindKeywordsPredicate companyPredicate;
 
-    public CompanyContainsFindKeywordsPredicateBuilder(String userInput) {
+    public CompanyContainsFindKeywordsPredicateBuilder(String userInput) throws ParseException {
         this.companyPredicate = preparePredicate(userInput);
     }
 
@@ -45,7 +48,7 @@ public class CompanyContainsFindKeywordsPredicateBuilder {
      * Parses the @param userInput and
      * @return CompanyContainsFindKeywordsPredicate as a predicate
      */
-    public CompanyContainsFindKeywordsPredicate preparePredicate (String userInput) {
+    public CompanyContainsFindKeywordsPredicate preparePredicate (String userInput) throws ParseException {
         requireNonNull(userInput);
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(userInput, PREFIX_COMPANY_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS);
@@ -65,7 +68,10 @@ public class CompanyContainsFindKeywordsPredicateBuilder {
             this.keywordsList.put(KEY_ADDRESS, (argMultimap.getAllValues(PREFIX_ADDRESS)));
         }
 
-        System.out.println(keywordsList);
+        if (keywordsList.isEmpty()) {
+            throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                    FindCompanyCommand.MESSAGE_USAGE));
+        }
 
         return new CompanyContainsFindKeywordsPredicate(keywordsList);
     }

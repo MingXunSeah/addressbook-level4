@@ -58,15 +58,13 @@ public class FindCandidateCommandTest {
         // null -> returns false
         assertFalse(findFirstCommand.equals(null));
 
-        // different candidate -> returns false
+        //different person -> returns false
         assertFalse(findFirstCommand.equals(findSecondCommand));
     }
 
     @Test
     @Ignore
     public void execute_zeroKeywords_noPersonFound() throws ParseException {
-        //String expectedMessage = "Candidate Book showing: findc  \n"
-        //  + String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
         String expectedMessage = String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
                 FindCandidateCommand.MESSAGE_USAGE);
         CandidateContainsFindKeywordsPredicate predicate =

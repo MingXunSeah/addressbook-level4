@@ -76,9 +76,12 @@ public class FindCandidateCommandParser implements Parser<FindCandidateCommand> 
         if (argMultimap.getValue(PREFIX_SALARY).isPresent()) {
             keywordsMap.put("Salary", (argMultimap.getAllValues(PREFIX_SALARY)));
         }
+        if (argMultimap.getValue(PREFIX_TAG).isPresent()) {
+            keywordsMap.put("Tag", (argMultimap.getAllValues(PREFIX_TAG)));
+        }
 
         if (keywordsMap.isEmpty()) {
-            throw new ParseException(MESSAGE_INVALID_COMMAND_FORMAT + FindCandidateCommand.MESSAGE_USAGE);
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCandidateCommand.MESSAGE_USAGE));
         }
 
         return new FindCandidateCommand(new CandidateContainsFindKeywordsPredicate(keywordsMap));
